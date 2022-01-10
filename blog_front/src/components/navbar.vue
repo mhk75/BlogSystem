@@ -7,8 +7,9 @@
         <span>blog</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat >
-        <span>Log In</span>
+      <v-btn flat @click="go_to_home" class="mr-4">Home</v-btn>
+      <v-btn flat @click="go_to_admin">
+        <span>Admin</span>
         <v-icon right>mdi-exit-to-app</v-icon>
       </v-btn>
     </v-toolbar>
@@ -54,6 +55,12 @@ export default {
     debug() {
       console.log(this.$store.state.posts.results)
     },
+    go_to_admin(){
+      this.$router.push('/admin')
+    },
+    go_to_home(){
+      this.$router.push('/')
+    }
   },
   mounted() {
     this.$store.dispatch("get_category_data")

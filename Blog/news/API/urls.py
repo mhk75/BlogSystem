@@ -12,4 +12,5 @@ urlpatterns =[
     path('category/submit/', CreateCategoryAPI.as_view()),
     path('category/submit/<int:pk>', CreateChildCategoryAPI.as_view()),
     path('category/update/<int:pk>', UpdateCategoryAPI.as_view()),
+    path('category/search/', CategorySearchAPI.as_view()),
 ]

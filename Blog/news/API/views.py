@@ -23,13 +23,14 @@ class CreateNewsAPI(generics.CreateAPIView):
     serializer_class = NewsSerializer
 
     def create(self, request, *args, **kwargs):
-        try:
-            cat_list = []
-            for cat_id in request.data['categories']:
-                cat_object = Category.objects.get(pk=cat_id)
-                cat_list.append(cat_object)
-        except Category.DoesNotExist:
-            return Response({"message": "cant find category"}, status=status.HTTP_404_NOT_FOUND)
+        cat_list = []
+        if 'categories' in request.data:
+            try:
+                for cat_id in request.data['categories']:
+                    cat_object = Category.objects.get(pk=cat_id)
+                    cat_list.append(cat_object)
+            except Category.DoesNotExist:
+                return Response({"message": "cant find category"}, status=status.HTTP_404_NOT_FOUND)
         try:
             News.objects.get(title=request.data['title'], content=request.data['content'])
             return Response({"message": "object already exist"}, status=status.HTTP_400_BAD_REQUEST)
@@ -147,4 +148,10 @@ class UpdateCategoryAPI(generics.UpdateAPIView):
             return Response({"message": "could not update cat object"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CategorySearchAPI(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
 
+    def get_queryset(self):
+        return Category.objects.all()

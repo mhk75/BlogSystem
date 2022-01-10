@@ -1,5 +1,6 @@
 <template>
   <v-container class="mt-5 blue lighten-4">
+    <post_add_popup/>
   <v-card flat  v-for="post in this.$store.state.posts.results" :key="post.id" cols = "8">
     <v-card-text>
       <v-row>
@@ -17,7 +18,12 @@
         </v-col>
         <v-col cols="5" sm="4" md="3" >
           <div class="right">
-            <button @click="" style="margin: 2%"> edit</button>
+            <post_update_popup
+                :postid = post.id
+                :posttitle = post.title
+                :postcontent = post.content
+                :cat_list = post.category
+            />
             <v-btn color="red lighten-2 white--text" @click="$store.dispatch('delete_post',{id:post.id})" > delete</v-btn>
           </div>
         </v-col>
@@ -57,18 +63,25 @@
 <script>
 import popup from "../components/popup.vue";
 import cat_add_popup from "../components/cat_add_popup.vue";
+import post_add_popup from "../components/post_add_popup";
+import post_update_popup from "../components/post_update_popup";
 export default {
   name: "admin_page",
   components:{
     popup,
-    cat_add_popup
+    cat_add_popup,
+    post_add_popup,
+    post_update_popup
   },
   mounted() {
-    this.$store.dispatch("get_post_data")
+    this.$store.dispatch("get_post_data",{page:this.pagination.current_page})
   },
   data() {
     return {
-
+      pagination:{
+        current_page:1,
+        per_page:2,
+      },
     }
   },
 

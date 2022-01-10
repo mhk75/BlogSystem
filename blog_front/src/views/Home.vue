@@ -9,5 +9,7 @@ import items from "../components/items.vue"
     components: {
       items
     },
+
   }
 </script>
+
